@@ -1,4 +1,4 @@
 # pslearngit
 learning github 
 <br>
-Author - Pranjal
+Author - Pranjal Sharma
