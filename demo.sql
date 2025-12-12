@@ -1,8 +1,8 @@
 -- demo.sql
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXIST users (
   id INTEGER PRIMARY KEY,
   name TEXT,
-  email TEXT
+  email TEX
 );
 
 INSERT INTO users (id, name, email) VALUES
