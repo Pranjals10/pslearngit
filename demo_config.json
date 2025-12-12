@@ -1,0 +1,12 @@
+{
+  "project": "demo_repo",
+  "owner": "Pranjal Sharma",
+  "version": "0.1",
+  "files": [
+    "demo_script.py",
+    "demo_notebook_simple.ipynb",
+    "demo_notebook_dataframe.ipynb",
+    "demo.sql",
+    "DemoApp.scala"
+  ]
+}
