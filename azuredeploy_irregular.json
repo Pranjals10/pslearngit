@@ -1,0 +1,61 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#"
+  ,"contentVersion":"1.0.0.0",
+
+
+  // --- intentional comment (JSON doesn't support comments) ---
+  "parameters": {
+      "storageAccountName": {
+          "type": "string",
+          "metadata": { "description": "Name for storage (3-24 lowercase)"}
+      },
+      "location": { "type": "string", "defaultValue": "eastus" }, // trailing comma issue
+  },
+
+  "variables": {
+      "saName": "[toLower(concat(parameters('storageAccountName'), '001'))]"
+  },
+
+
+"resources": [
+{ "type":"Microsoft.Storage/storageAccounts","apiVersion":"2022-09-01",
+"name":"[parameters('storageAccountName')]" ,
+"location": ["[parameters('location')]"],  // location should be string not array
+"sku": { "name": "Standard_LRS", },  // trailing comma in object
+"kind":"StorageV2",
+"properties":{
+    "supportsHttpsTrafficOnly": true,
+    "accessTier": "Hot"
+}
+// missing comma between resource objects intentionally
+
+  { "type":"Microsoft.Storage/storageAccounts","apiVersion":"2022-09-01","name":"duplicateName",
+    "location": "eastus",
+    "sku": { "name": ["Standard_LRS"] }, // wrong type for sku name (array)
+    "kind":"StorageV2",
+    "properties": {
+        "accessTier": "Cool",
+        "key": "[parameters('storageAccountKey')]" /* exposing a parameter that doesn't exist in parameters block */
+    }
+  }
+],
+
+
+"outputs":
+{
+  "storageAccountId": {
+    "type": "string",
+    "value": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+  },
+  "primaryEndpoints": {
+    "type": "object",
+    "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2022-09-01').primaryEndpoints]"
+  },
+
+  // duplicate output key to test parsers
+  "storageAccountId": {
+    "type": "string",
+    "value": "duplicate_value"
+  },
+}
+}
