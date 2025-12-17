@@ -1,0 +1,36 @@
+{
+  "name": "CustomerPipeline",
+  "properties": {
+    "activities": [
+      {
+        "name": "CopyData",
+        "type": "Copy",
+        "typeProperties": {
+          "source": {
+            "type": "BlobSource"
+          },
+          "sink": {
+            "type": "SqlSink"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "sqlPassword": {
+        "type": "String",
+        "defaultValue": "PlainText123"
+      }
+    }
+  },
+  "linkedServices": [
+    {
+      "name": "SqlLS",
+      "properties": {
+        "type": "AzureSqlDatabase",
+        "typeProperties": {
+          "connectionString": "Server=prod;User=admin;Password=PlainText123"
+        }
+      }
+    }
+  ]
+}

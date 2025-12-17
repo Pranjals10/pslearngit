@@ -1,0 +1,4 @@
+{
+  "sql": "Server=tcp:prod.database.windows.net;User ID=admin;Password=PlainText!",
+  "token": "dapiREALTOKEN"
+}
