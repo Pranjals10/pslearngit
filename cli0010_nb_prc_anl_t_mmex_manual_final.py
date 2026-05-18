@@ -142,9 +142,8 @@ def look_column_else_zero( tabla : DataFrame , columna : String) : DataFrame =
 # In[13]:
 
 
-var df_kpis_1 = look_column_else_zero(df_kpis_temp, "imp_ctral_total_cf_an_upa_est")
-var df_kpis_2 = look_column_else_zero(df_kpis_1, "imp_tot_mm_tot_cf_an_upa_est")
-var df_kpis = look_column_else_zero(df_kpis_2, "imp_ctral_amort")
+val requiredColumns = List("imp_ctral_total_cf_an_upa_est", "imp_tot_mm_tot_cf_an_upa_est", "imp_ctral_amort")
+var df_kpis = requiredColumns.foldLeft(df_kpis_temp)((df, column) => look_column_else_zero(df, column))
 
 // var df_kpis = df_kpis_3.select(col("imp_ctral_total_cf_an_upa_est"), col("imp_ctral_Tcambio_MXN_EUR_ac"), col("id_escenario"), col("cod_periodo"))
 
