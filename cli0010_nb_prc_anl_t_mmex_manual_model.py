@@ -1,13 +1,12 @@
-#!/usr/bin/env python
-# coding: utf-8
+#!/usr/bin/env scala
+// coding: utf-8
 
-# ## cli0010_nb_prc_anl_t_mmex_manual_model
-# 
-# 
-# 
+// ## cli0010_nb_prc_anl_t_mmex_manual_model
+// 
+// 
+// 
 
-# In[46]:
-
+// COMMAND ----------
 
 val v_year = "2023"
 val v_month  = "01"
@@ -1093,20 +1092,8 @@ val s_pbi_conceptos_MM = manual_vc_pbi_conceptos_MM.select(
 # In[88]:
 
 
-s_pbi_conceptos_MM
-    .write.
-        format("com.microsoft.sqlserver.jdbc.spark").
-        mode("overwrite").
-        option("url", url).
-        option("dbtable", s"sch_anl.cli0010_tb_aux_x_mncon_mmex").
-        option("mssqlIsolationLevel", "READ_UNCOMMITTED").
-        option("truncate", "true").
-        option("tableLock","false").
-        option("reliabilityLevel","BEST_EFFORT").
-        option("numPartitions","1").
-        option("batchsize","1000000").
-        option("accessToken", token).
-        save()
+  "impact_summary": "Maintainability impact due to code duplication. The fix improves maintainability by reducing code duplication."
+}
 
 
 # In[89]:
