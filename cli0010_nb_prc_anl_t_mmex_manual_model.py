@@ -9,12 +9,7 @@
 # In[46]:
 
 
-val v_year = "2023"
-val v_month  = "01"
-val escenario = "PA" // {ALL / PA-UPA / EST / REAL / PA / UPA}
-val applicationName: String = ""
-val parentUid:String = "N/A"
-val uuid:String = "N/A"
+cli0010_nb_prc_anl_t_mmex_manual_model.scala
 
 
 # In[47]:
@@ -208,43 +203,50 @@ val maestro_manual_re_cr = findSubDirectoriesLike(maestro_manual_re_cr_path,"ing
 # In[56]:
 
 
-var df_ret_est_cr = spark.emptyDataFrame
-if (escenario == "ALL" || escenario == "EST"){
-   df_ret_est_cr = spark.read.parquet(maestro_manual_est_cr).cache
-
-   var mm_est_cr = df_ret_est_cr.select(
-      col("escenario").cast(VarcharType(30)).as("cod_escenario"),
-      col("periodo").cast(IntegerType).as("num_periodo"),
-      col("unidadnegocio").cast(VarcharType(150)).as("val_unidadnegocio"),
-      col("sociedad").cast(VarcharType(150)).as("val_sociedad"),
-      col("pais").cast(VarcharType(150)).as("val_pais"),
-      col("producto").cast(VarcharType(150)).as("val_producto"),
-      col("origen").cast(VarcharType(150)).as("val_origen"),
-      col("canal").cast(VarcharType(150)).as("val_canal"),
-      col("proceso").cast(VarcharType(150)).as("val_proceso"),
-      col("nombrekpi").cast(VarcharType(150)).as("nom_nombrekpi"),
-      col("kpi").cast(VarcharType(150)).as("cod_kpi"),
-      col("valorkpi").cast(DecimalType(24,10)).as("val_kpi"),
-      col("unidadmedida").cast(VarcharType(50)).as("val_unidadmedida"),
-      translate(col("ARiATimestampLoad"), "T"," ").cast(VarcharType(50)).as("tst_system_date") // Quitamos el caracter 'T' parapoder convertirlo a timestamp
-   ).cache
-   if (maestro_manual_est_cr contains "ingestion_data"){
-      mm_est_cr
-         .write.
-            format("com.microsoft.sqlserver.jdbc.spark").
-            mode("overwrite"). //appens
-            option("url", url).
-            option("dbtable", s"sch_anl.cli0010_tb_dim_m_mn_st_cr_mmex").
-            option("mssqlIsolationLevel", "READ_UNCOMMITTED").
-            option("truncate", "true").
-            option("tableLock","false").
-            option("reliabilityLevel","BEST_EFFORT").
-            option("numPartitions","1").
-            option("batchsize","1000000").
-            option("accessToken", token).
-            save()
-   }
+def processParquetData(path: String, tableName: String, columns: Seq[Column], condition: Boolean): DataFrame = {
+  if (condition) {
+    val df = spark.read.parquet(path).cache
+    val transformedDF = df.select(columns: _*).cache
+    if (path contains "ingestion_data") {
+      transformedDF
+        .write
+        .format("com.microsoft.sqlserver.jdbc.spark")
+        .mode("overwrite")
+        .option("url", url)
+        .option("dbtable", s"sch_anl.$tableName")
+        .option("mssqlIsolationLevel", "READ_UNCOMMITTED")
+        .option("truncate", "true")
+        .option("tableLock", "false")
+        .option("reliabilityLevel", "BEST_EFFORT")
+        .option("numPartitions", "1")
+        .option("batchsize", "1000000")
+        .option("accessToken", token)
+        .save()
+    }
+    transformedDF
+  } else {
+    spark.emptyDataFrame
+  }
 }
+
+val estColumns = Seq(
+  col("escenario").cast(VarcharType(30)).as("cod_escenario"),
+  col("periodo").cast(IntegerType).as("num_periodo"),
+  col("unidadnegocio").cast(VarcharType(150)).as("val_unidadnegocio"),
+  col("sociedad").cast(VarcharType(150)).as("val_sociedad"),
+  col("pais").cast(VarcharType(150)).as("val_pais"),
+  col("producto").cast(VarcharType(150)).as("val_producto"),
+  col("origen").cast(VarcharType(150)).as("val_origen"),
+  col("canal").cast(VarcharType(150)).as("val_canal"),
+  col("proceso").cast(VarcharType(150)).as("val_proceso"),
+  col("nombrekpi").cast(VarcharType(150)).as("nom_nombrekpi"),
+  col("kpi").cast(VarcharType(150)).as("cod_kpi"),
+  col("valorkpi").cast(DecimalType(24,10)).as("val_kpi"),
+  col("unidadmedida").cast(VarcharType(50)).as("val_unidadmedida"),
+  translate(col("ARiATimestampLoad"), "T"," ").cast(VarcharType(50)).as("tst_system_date")
+)
+
+val df_ret_est_cr = processParquetData(maestro_manual_est_cr, "cli0010_tb_dim_m_mn_st_cr_mmex", estColumns, escenario == "ALL" || escenario == "EST")
 
 
 # In[57]:
