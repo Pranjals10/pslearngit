@@ -9,12 +9,7 @@
 # In[46]:
 
 
-val v_year = "2023"
-val v_month  = "01"
-val escenario = "PA" // {ALL / PA-UPA / EST / REAL / PA / UPA}
-val applicationName: String = ""
-val parentUid:String = "N/A"
-val uuid:String = "N/A"
+cli0010_nb_prc_anl_t_mmex_manual_model.scala
 
 
 # In[47]:
@@ -172,9 +167,24 @@ val business="AM_COM_Vista_Cliente"
 // Path raiz de la ruta del maestro de estimado de cuenta resultados del gen2
 val my_account = conexion("Endpoint").toString.substring(8)
 
-val maestro_manual_est_cr_path = s"abfss://$my_container@$my_account/$business/vc_manual_mm_est_cr"
+def getMaestroManualCrPath(scenario: String): (String, String) = {
+  val crPaths = Map(
+    "EST" -> "vc_manual_mm_est_cr",
+    "PA-UPA" -> "vc_manual_mm_pa_cr",
+    "PA" -> "vc_manual_mm_pa_cr",
+    "UPA" -> "vc_manual_mm_pa_cr",
+    "REAL" -> "vc_manual_mm_re_cr"
+  )
+  val business = "AM_COM_Vista_Cliente"
+  val my_account = conexion("Endpoint").toString.substring(8)
+  val crPath = crPaths(scenario)
+  val maestro_manual_cr_path = s"abfss://$my_container@$my_account/$business/$crPath"
+  (maestro_manual_cr_path, findSubDirectoriesLike(maestro_manual_cr_path,"ingestion_data",aperiodo).get(aperiodo).getOrElse(maestro_manual_cr_path))
+}
 
-val maestro_manual_est_cr = findSubDirectoriesLike(maestro_manual_est_cr_path,"ingestion_data",aperiodo).get(aperiodo).getOrElse(maestro_manual_est_cr_path)
+val (maestro_manual_est_cr_path, maestro_manual_est_cr) = getMaestroManualCrPath("EST")
+val (maestro_manual_pa_cr_path, maestro_manual_pa_cr) = getMaestroManualCrPath("PA")
+val (maestro_manual_re_cr_path, maestro_manual_re_cr) = getMaestroManualCrPath("REAL")
 
 
 # In[54]:
@@ -1202,4 +1212,3 @@ s_pbi_negocio_MM
         option("batchsize","1000000").
         option("accessToken", token).
         save()
-
