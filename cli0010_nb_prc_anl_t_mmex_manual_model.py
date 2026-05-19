@@ -9,12 +9,10 @@
 # In[46]:
 
 
+#!/usr/bin/env scala
+// ## cli0010_nb_prc_anl_t_mmex_manual_model
 val v_year = "2023"
 val v_month  = "01"
-val escenario = "PA" // {ALL / PA-UPA / EST / REAL / PA / UPA}
-val applicationName: String = ""
-val parentUid:String = "N/A"
-val uuid:String = "N/A"
 
 
 # In[47]:
