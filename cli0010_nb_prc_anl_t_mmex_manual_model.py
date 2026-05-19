@@ -1092,20 +1092,8 @@ val s_pbi_conceptos_MM = manual_vc_pbi_conceptos_MM.select(
 # In[88]:
 
 
-s_pbi_conceptos_MM
-    .write.
-        format("com.microsoft.sqlserver.jdbc.spark").
-        mode("overwrite").
-        option("url", url).
-        option("dbtable", s"sch_anl.cli0010_tb_aux_x_mncon_mmex").
-        option("mssqlIsolationLevel", "READ_UNCOMMITTED").
-        option("truncate", "true").
-        option("tableLock","false").
-        option("reliabilityLevel","BEST_EFFORT").
-        option("numPartitions","1").
-        option("batchsize","1000000").
-        option("accessToken", token).
-        save()
+  "impact_summary": "Maintainability impact due to code duplication. The fix improves maintainability by reducing code duplication."
+}
 
 
 # In[89]:
