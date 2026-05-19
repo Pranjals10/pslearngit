@@ -1,13 +1,12 @@
-#!/usr/bin/env python
-# coding: utf-8
+#!/usr/bin/env scala
+// coding: utf-8
 
-# ## cli0010_nb_prc_anl_t_mmex_manual_model
-# 
-# 
-# 
+// ## cli0010_nb_prc_anl_t_mmex_manual_model
+// 
+// 
+// 
 
-# In[46]:
-
+// COMMAND ----------
 
 val v_year = "2023"
 val v_month  = "01"
