@@ -9,12 +9,7 @@
 # In[46]:
 
 
-val v_year = "2023"
-val v_month  = "01"
-val escenario = "PA" // {ALL / PA-UPA / EST / REAL / PA / UPA}
-val applicationName: String = ""
-val parentUid:String = "N/A"
-val uuid:String = "N/A"
+cli0010_nb_prc_anl_t_mmex_manual_model.scala
 
 
 # In[47]:
