@@ -147,7 +147,7 @@ print(v_year)
 val linked_service_name = "DL_COM"
 val my_container = "processed"
 val cont_lakehouse = "lakehouse"
-val my_account = conexion("Endpoint").toString.substring(8)
+val my_account = sys.env("AZURE_BLOB_STORAGE_ACCOUNT_NAME")
 
 
 # In[52]:
@@ -170,7 +170,7 @@ var periodo = v_year.concat(v_month).toInt
 val business="AM_COM_Vista_Cliente"
 
 // Path raiz de la ruta del maestro de estimado de cuenta resultados del gen2
-val my_account = conexion("Endpoint").toString.substring(8)
+val my_account = sys.env("AZURE_BLOB_STORAGE_ACCOUNT_NAME")
 
 val maestro_manual_est_cr_path = s"abfss://$my_container@$my_account/$business/vc_manual_mm_est_cr"
 
@@ -183,7 +183,7 @@ val maestro_manual_est_cr = findSubDirectoriesLike(maestro_manual_est_cr_path,"i
 val business="AM_COM_Vista_Cliente"
 
 // Path raiz de la ruta del maestro de presupuesto y upa de cuenta resultados del gen2
-val my_account = conexion("Endpoint").toString.substring(8)
+val my_account = sys.env("AZURE_BLOB_STORAGE_ACCOUNT_NAME")
 
 val maestro_manual_pa_cr_path = s"abfss://$my_container@$my_account/$business/vc_manual_mm_pa_cr"
 
@@ -196,7 +196,7 @@ val maestro_manual_pa_cr = findSubDirectoriesLike(maestro_manual_pa_cr_path,"ing
 val business="AM_COM_Vista_Cliente"
 
 // Path raiz de la ruta del maestro de real de cuenta resultados del gen2
-val my_account = conexion("Endpoint").toString.substring(8)
+val my_account = sys.env("AZURE_BLOB_STORAGE_ACCOUNT_NAME")
 
 val maestro_manual_re_cr_path = s"abfss://$my_container@$my_account/$business/vc_manual_mm_re_cr"
 
@@ -1065,7 +1065,7 @@ if(!(finalizado.isEmpty)){
 val business="AP_Vista_Cliente"
 
 // Path raiz de la ruta de los maestros del gen2
-val my_account = conexion("Endpoint").toString.substring(8)
+val my_account = sys.env("AZURE_BLOB_STORAGE_ACCOUNT_NAME")
 
 val manual_vc_pbi_conceptos_MM_path = s"abfss://$my_container@$my_account/sanited/$business/GLB/manual_vc_pbi_conceptos_MM"
 val manual_vc_pbi_dim1_MM_path = s"abfss://$my_container@$my_account/sanited/$business/GLB/manual_vc_pbi_dim1_MM"
