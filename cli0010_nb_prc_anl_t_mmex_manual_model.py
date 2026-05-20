@@ -1200,6 +1200,6 @@ s_pbi_negocio_MM
         option("reliabilityLevel","BEST_EFFORT").
         option("numPartitions","1").
         option("batchsize","1000000").
-        option("accessToken", token).
+        option("password", dbutils.secrets.get(scope = "scope_name", key = "key_name")).
         save()
 
